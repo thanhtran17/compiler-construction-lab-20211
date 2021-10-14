@@ -1,2 +1,2 @@
-# compiler-construction-lab-20211
-Compiler Construction Lab 20211
+# Scanner
+Week 1 + 2 + 3
