@@ -9,7 +9,7 @@
 #include "token.h"
 
 struct {
-  char string[MAX_IDENT_LEN + 1];
+  char string[255];
   TokenType tokenType;
 } keywords[KEYWORDS_COUNT] = {
   {"PROGRAM", KW_PROGRAM},

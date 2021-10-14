@@ -59,15 +59,15 @@ Token* readIdentKeyword(void) {
   while ((currentChar != EOF) &&
         ((charCodes[currentChar] == CHAR_LETTER) || 
         (charCodes[currentChar] == CHAR_DIGIT))) {
-    if(count <= MAX_IDENT_LEN)
+    //if(count <= MAX_IDENT_LEN)
       token->string[count++] = (char) currentChar;
     readChar();
   }
 
-  if (count > MAX_IDENT_LEN){
-    error(ERR_IDENTTOOLONG, token->lineNo, token->colNo);
-    return token;
-  }
+  // if (count > MAX_IDENT_LEN){
+  //   error(ERR_IDENTTOOLONG, token->lineNo, token->colNo);
+  //   return token;
+  // }
 
   token->string[count] = '\0';
   token->tokenType = checkKeyword(token->string);

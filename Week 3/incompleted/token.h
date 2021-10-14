@@ -7,7 +7,7 @@
 #ifndef __TOKEN_H__
 #define __TOKEN_H__
 
-#define MAX_IDENT_LEN 15
+// #define MAX_IDENT_LEN 15
 #define MAX_NUMBER_LEN 10     // New maxinum number length
 #define KEYWORDS_COUNT 20
 
@@ -31,7 +31,7 @@ typedef enum {
 } TokenType; 
 
 typedef struct {
-  char string[MAX_IDENT_LEN + 1];
+  char string[255];
   int lineNo, colNo;
   TokenType tokenType;
   int value;
