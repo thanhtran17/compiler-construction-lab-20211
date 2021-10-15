@@ -1,5 +1,5 @@
 Program _Example1_;  /* Example 1 */
-Begin
+Begin BEGIN beGiN
     ( ) ()
   [1, 2, 3, 4, 5]; /* */
 End. /* Example 1 */
