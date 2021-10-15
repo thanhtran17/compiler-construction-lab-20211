@@ -2,4 +2,5 @@ Program _Example1_;  /* Example 1 */
 Begin BEGIN beGiN
     ( ) ()
   [1, 2, 3, 4, 5]; /* */
+  'a'
 End. /* Example 1 */
