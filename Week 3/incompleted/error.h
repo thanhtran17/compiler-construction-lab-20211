@@ -12,7 +12,7 @@ typedef enum {
   ERR_INVALIDSTRINGCONSTANT,
   ERR_INVALIDCHARCONSTANT,
   ERR_INVALIDSYMBOL,
-  ERR_NUMBERTOOLONG,   // new error    
+  ERR_NUMBERTOOLONG,      
 } ErrorCode;
 
 
@@ -20,7 +20,7 @@ typedef enum {
 #define ERM_INVALIDSTRINGCONSTANT "Invalid const string!"
 #define ERM_INVALIDCHARCONSTANT "Invalid const char!"
 #define ERM_INVALIDSYMBOL "Invalid symbol!"
-#define ERM_NUMBERTOOLONG "Number too long!"   // new error message
+#define ERM_NUMBERTOOLONG "Number too long!"   
 
 
 void error(ErrorCode err, int lineNo, int colNo);
