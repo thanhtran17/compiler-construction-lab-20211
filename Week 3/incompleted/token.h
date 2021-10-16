@@ -12,7 +12,7 @@
 
 typedef enum {
   //tokens
-  TK_NONE,  TK_IDENT, TK_NUMBER, TK_CHAR, TK_EOF,
+  TK_NONE,  TK_IDENT, TK_NUMBER, TK_CHAR, TK_STRING, TK_EOF, 
 
   //keyword
   KW_PROGRAM, KW_CONST, KW_TYPE, KW_VAR,

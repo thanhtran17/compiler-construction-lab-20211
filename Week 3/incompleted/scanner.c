@@ -97,29 +97,31 @@ Token* readNumber(void) {
 }
 
 /******************************************************************/
-Token* readConstChar(void) {
-  Token *token = makeToken(TK_CHAR, lineNo, colNo);
-
+Token* readConstString(void) {
+  Token *token = makeToken(TK_STRING, lineNo, colNo);
+  int count = 0;
   readChar();
 
   if(currentChar == EOF){
     token->tokenType = TK_NONE;
-    error(ERR_INVALIDCHARCONSTANT, token->lineNo, token->colNo);
+    error(ERR_INVALIDSTRINGCONSTANT, token->lineNo, token->colNo);
     return token;
   }
 
-  token->string[0] = currentChar;
-  token->string[1] = '\0';
-  token->value = currentChar;
-
-  readChar();
-
-  if(currentChar == EOF){
-    token->tokenType = TK_NONE;
-    error(ERR_INVALIDCHARCONSTANT, token->lineNo, token->colNo);
-    return token;
+  while ((currentChar != EOF) && 
+        ((charCodes[currentChar] == CHAR_SPACE) ||
+        (charCodes[currentChar] == CHAR_LETTER) || 
+        (charCodes[currentChar] == CHAR_DIGIT))) {
+    token->string[count++] = (char) currentChar;
+    readChar();
   }
 
+  if (count >= 255){
+    error(ERR_STRINGCONSTTOOLONG, token->lineNo, token->colNo);
+    return token;
+  }
+  
+  token->string[count] = '\0';
 
   if(charCodes[currentChar] == CHAR_SINGLEQUOTE){
     readChar();
@@ -127,7 +129,7 @@ Token* readConstChar(void) {
   }
   else{
     token->tokenType = TK_NONE;
-    error(ERR_INVALIDCHARCONSTANT, token->lineNo, token->colNo);
+    error(ERR_INVALIDSTRINGCONSTANT, token->lineNo, token->colNo);
     return token;
   }
 }
@@ -279,7 +281,8 @@ Token* getToken(void) {
       return token;
     // 34 35 36
     case CHAR_SINGLEQUOTE: 
-      return readConstChar();
+      // return readConstChar();
+      return readConstString();
     // 39
     case CHAR_RPAR:
       token = makeToken(SB_RPAR, lineNo, colNo);
@@ -322,7 +325,9 @@ void printToken(Token *token) {
   case TK_IDENT: printf("TK_IDENT(%s)\n", token->string); break;
   case TK_NUMBER: printf("TK_NUMBER(%s)\n", token->string); break;
   case TK_CHAR: printf("TK_CHAR(\'%s\')\n", token->string); break;
+  case TK_STRING: printf("TK_STRING(\'%s\')\n", token->string); break;
   case TK_EOF: printf("TK_EOF\n"); break;
+  
 
   case KW_PROGRAM: printf("KW_PROGRAM\n"); break;
   case KW_CONST: printf("KW_CONST\n"); break;
