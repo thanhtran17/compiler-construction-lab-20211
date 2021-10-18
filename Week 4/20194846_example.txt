@@ -1,0 +1,25 @@
+Program Calculate_Squares;
+   
+Var n : Integer;
+    i : Integer;
+    res : Integer;
+
+Function square(num : Integer) : Integer;
+  Begin
+    square = num * num;
+  End;
+
+Begin
+  res := 0;
+
+  Write('Enter n: ');
+  Readln(n);
+
+  For i := 0 to (n - 1) do 
+    Begin 
+      res := res + square(i);
+    End
+  
+  Call Write('The sum of the squares of the first n natural numbers is: ');
+  Call Writeln(res);
+End. 
