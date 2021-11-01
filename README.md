@@ -1,3 +1,3 @@
-# parser
+# Parser
 
-Week 4-5-6-7
+- Week 4-5-6-7
