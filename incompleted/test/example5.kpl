@@ -1,0 +1,20 @@
+Program Squares;
+   
+Var n : Integer;
+    i : Integer;
+    res : Integer;
+
+Function square(num: Integer): Integer;
+  Begin
+    square := num * num;
+  End;
+
+Begin
+  res := 0;
+  Call ReadI;
+  For i:= 1 to n do 
+    Begin 
+      res := res + square(i);
+    End;
+  Call WriteI(res);
+End. 
