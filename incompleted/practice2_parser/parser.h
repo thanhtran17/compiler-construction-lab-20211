@@ -16,6 +16,7 @@ void compileBlock2(void);
 void compileBlock3(void);
 void compileBlock4(void);
 void compileBlock5(void);
+void compileDecls(void);
 void compileConstDecls(void);
 void compileConstDecl(void);
 void compileTypeDecls(void);

@@ -40,49 +40,46 @@ void compileProgram(void) {
 }
 //-------------------------------------------------------------------------------------------------
 void compileBlock(void) {
-  compileDecls();
+  assert("Parsing a Block ....");
+  if (lookAhead->tokenType == KW_CONST) {
+    eat(KW_CONST);
+    compileConstDecl();
+    compileConstDecls();
+    compileBlock2();
+  } 
+  else compileBlock2();
   assert("Block parsed!");
 }
 //-------------------------------------------------------------------------------------------------
 void compileBlock2(void) {
-  eat(KW_BEGIN);
-  compileStatements();
-  eat(KW_END);
-}
-//-------------------------------------------------------------------------------------------------
-void compileDecls(void) {
-  switch (lookAhead->tokenType)
-  {
-  case KW_CONST:
-    eat(KW_CONST);
-    compileConstDecl();
-    compileConstDecls();
-    compileDecls();
-    break;
-  case KW_TYPE:
+  if (lookAhead->tokenType == KW_TYPE) {
     eat(KW_TYPE);
     compileTypeDecl();
     compileTypeDecls();
-    compileDecls();
-    break;
-  case KW_VAR:
+    compileBlock3();
+  } 
+  else compileBlock3();
+}
+//-------------------------------------------------------------------------------------------------
+void compileBlock3(void) {
+  if (lookAhead->tokenType == KW_VAR) {
     eat(KW_VAR);
     compileVarDecl();
     compileVarDecls();
-    compileDecls();
-    break;
-  case KW_FUNCTION:
-    compileFuncDecl();
-    compileDecls();
-    break;
-  case KW_PROCEDURE:
-    compileProcDecl();
-    compileDecls();
-    break;
-  default:
-    compileBlock2();
-    break;
-  }
+    compileBlock4();
+  } 
+  else compileBlock4();
+}
+//-------------------------------------------------------------------------------------------------
+void compileBlock4(void) {
+  compileSubDecls();
+  compileBlock5();
+}
+//-------------------------------------------------------------------------------------------------
+void compileBlock5(void) {
+  eat(KW_BEGIN);
+  compileStatements();
+  eat(KW_END);
 }
 //-------------------------------------------------------------------------------------------------
 void compileConstDecls(void) {
