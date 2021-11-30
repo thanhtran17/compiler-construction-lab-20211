@@ -40,39 +40,6 @@ Type* makeArrayType(int arraySize, Type* elementType) {
   return type;
 }
 
-Type* duplicateType(Type* type) {
-  Type* resultType = (Type*) malloc(sizeof(Type));
-  resultType->typeClass = type->typeClass;
-  if (type->typeClass == TP_ARRAY) {
-    resultType->arraySize = type->arraySize;
-    resultType->elementType = duplicateType(type->elementType);
-  }
-  return resultType;
-}
-
-int compareType(Type* type1, Type* type2) {
-  if (type1->typeClass == type2->typeClass) {
-    if (type1->typeClass == TP_ARRAY) {
-      if (type1->arraySize == type2->arraySize)
-	return compareType(type1->elementType, type2->elementType);
-      else return 0;
-    } else return 1;
-  } else return 0;
-}
-
-void freeType(Type* type) {
-  switch (type->typeClass) {
-  case TP_INT:
-  case TP_CHAR:
-    free(type);
-    break;
-  case TP_ARRAY:
-    freeType(type->elementType);
-    freeType(type);
-    break;
-  }
-}
-
 /******************* Constant utility ******************************/
 
 ConstantValue* makeIntConstant(int i) {
@@ -175,67 +142,7 @@ Object* createParameterObject(char *name, enum ParamKind kind, Object* owner) {
   return obj;
 }
 
-void freeObject(Object* obj) {
-  switch (obj->kind) {
-  case OBJ_CONSTANT:
-    free(obj->constAttrs->value);
-    free(obj->constAttrs);
-    break;
-  case OBJ_TYPE:
-    free(obj->typeAttrs->actualType);
-    free(obj->typeAttrs);
-    break;
-  case OBJ_VARIABLE:
-    free(obj->varAttrs->type);
-    free(obj->varAttrs);
-    break;
-  case OBJ_FUNCTION:
-    freeReferenceList(obj->funcAttrs->paramList);
-    freeType(obj->funcAttrs->returnType);
-    freeScope(obj->funcAttrs->scope);
-    free(obj->funcAttrs);
-    break;
-  case OBJ_PROCEDURE:
-    freeReferenceList(obj->procAttrs->paramList);
-    freeScope(obj->procAttrs->scope);
-    free(obj->procAttrs);
-    break;
-  case OBJ_PROGRAM:
-    freeScope(obj->progAttrs->scope);
-    free(obj->progAttrs);
-    break;
-  case OBJ_PARAMETER:
-    freeType(obj->paramAttrs->type);
-    free(obj->paramAttrs);
-  }
-  free(obj);
-}
 
-void freeScope(Scope* scope) {
-  freeObjectList(scope->objList);
-  free(scope);
-}
-
-void freeObjectList(ObjectNode *objList) {
-  ObjectNode* list = objList;
-
-  while (list != NULL) {
-    ObjectNode* node = list;
-    list = list->next;
-    freeObject(node->object);
-    free(node);
-  }
-}
-
-void freeReferenceList(ObjectNode *objList) {
-  ObjectNode* list = objList;
-
-  while (list != NULL) {
-    ObjectNode* node = list;
-    list = list->next;
-    free(node);
-  }
-}
 
 void addObject(ObjectNode **objList, Object* obj) {
   ObjectNode* node = (ObjectNode*) malloc(sizeof(ObjectNode));
@@ -251,14 +158,6 @@ void addObject(ObjectNode **objList, Object* obj) {
   }
 }
 
-Object* findObject(ObjectNode *objList, char *name) {
-  while (objList != NULL) {
-    if (strcmp(objList->object->name, name) == 0) 
-      return objList->object;
-    else objList = objList->next;
-  }
-  return NULL;
-}
 
 /******************* others ******************************/
 
@@ -297,11 +196,7 @@ void initSymTab(void) {
 }
 
 void cleanSymTab(void) {
-  freeObject(symtab->program);
-  freeObjectList(symtab->globalObjectList);
-  free(symtab);
-  freeType(intType);
-  freeType(charType);
+ 
 }
 
 void enterBlock(Scope* scope) {
