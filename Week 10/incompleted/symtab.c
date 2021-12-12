@@ -99,7 +99,6 @@ ConstantValue* duplicateConstantValue(ConstantValue* v) {
     value->charValue = v->charValue;
   return value;
 }
-
 /******************* Object utilities ******************************/
 
 Scope* createScope(Object* owner, Scope* outer) {
@@ -315,6 +314,19 @@ void exitBlock(void) {
 
 Object* lookupObject(char *name) {
   // TODO
+  Scope* currentScope = symtab->currentScope;
+  Object* obj = NULL;
+
+  // bắt đầu tìm trong block hiện tại
+  while (currentScope != NULL){
+    obj = findObject(currentScope->objList, name);
+    if (obj != NULL) {
+      return obj;
+    }
+    // nếu không có trong danh sách obj của block
+    // chuyển đến outer
+    currentScope = currentScope->outer;
+  }
 }
 
 void declareObject(Object* obj) {
