@@ -270,7 +270,7 @@ Type* compileType(void) {
   case KW_CHAR: 
     eat(KW_CHAR); 
     type = (Type*) malloc(sizeof(type));
-    type->typeClass = TP_INT;
+    type->typeClass = TP_CHAR;
     break;
   case KW_ARRAY:
     type = (Type*) malloc(sizeof(type));
