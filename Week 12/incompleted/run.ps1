@@ -9,4 +9,4 @@ gcc -c symtab.c
 gcc -c token.c 
 gcc -c semantics.c
 gcc -o 1 main.o semantics.o charcode.o debug.o error.o parser.o reader.o scanner.o symtab.o token.o
-./1 tests/example1.kpl
+./1 tests/example6.kpl
