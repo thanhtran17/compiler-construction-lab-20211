@@ -13,11 +13,29 @@ extern SymTab* symtab;
 extern Token* currentToken;
 
 Object* lookupObject(char *name) {
-  // TODO
+  // ---- DONE ---- //
+  Scope* scope = symtab->currentScope;
+  Object* obj;
+
+  while (scope != NULL) {
+    obj = findObject(scope->objList, name);
+    if (obj != NULL)
+      return obj;
+    scope = scope->outer;
+  }
+
+  obj = findObject(symtab->globalObjectList, name);
+  
+  if (obj != NULL) 
+    return obj;
+  return NULL;
 }
 
+// Kiểm tra sự tồn tại của Object trong scope
 void checkFreshIdent(char *name) {
-  // TODO
+  // ---- DONE ---- //
+  if (findObject(symtab->currentScope->objList, name) != NULL)
+    error(ERR_DUPLICATE_IDENT, currentToken->lineNo, currentToken->lineNo);
 }
 
 Object* checkDeclaredIdent(char* name) {
