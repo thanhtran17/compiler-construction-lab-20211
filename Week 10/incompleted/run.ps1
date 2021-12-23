@@ -8,4 +8,4 @@ gcc -c scanner.c
 gcc -c symtab.c 
 gcc -c token.c 
 gcc -o 1 main.o charcode.o debug.o error.o parser.o reader.o scanner.o symtab.o token.o
-./1 tests/example5.kpl
+./1 tests/example1.kpl
