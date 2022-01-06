@@ -1,13 +1,8 @@
 Program Example1; (* Example 1 *)
-VAR N: INTEGER;
-    I: INTEGER;
+
+BEGIN
+  CALL wrongProcedure;
+END;
+
 Begin
-    N := 10;
-    I := 1;
-    S := 0;
-    WHILE I <= N DO
-     BEGIN
-       S := S + I;
-       I := I + 1;
-     END
 End. (* Example 1 *)

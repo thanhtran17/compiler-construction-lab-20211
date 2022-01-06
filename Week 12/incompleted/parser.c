@@ -222,8 +222,13 @@ ConstantValue* compileUnsignedConstant(void) {
     break;
   case TK_IDENT:
     eat(TK_IDENT);
-    // TODO: check if the constant identifier is declared and get its value
-
+    obj = checkDeclaredConstant(currentToken->string);
+    if (obj != NULL){
+      constValue = duplicateConstantValue(obj->constAttrs->value);
+    }
+    else {
+      error(ERR_UNDECLARED_CONSTANT, currentToken->lineNo, currentToken->colNo);
+    }
     break;
   case TK_CHAR:
     eat(TK_CHAR);
@@ -271,7 +276,13 @@ ConstantValue* compileConstant2(void) {
     break;
   case TK_IDENT:
     eat(TK_IDENT);
-    // TODO: check if the integer constant identifier is declared and get its value
+    obj = checkDeclaredConstant(currentToken->string);
+    if (obj != NULL) {
+      constValue = duplicateConstantValue(obj->constAttrs->value);
+    }
+    else {
+      error(ERR_UNDECLARED_CONSTANT, currentToken->colNo, currentToken->lineNo);
+    }
     break;
   default:
     error(ERR_INVALID_CONSTANT, lookAhead->lineNo, lookAhead->colNo);
@@ -310,6 +321,11 @@ Type* compileType(void) {
   case TK_IDENT:
     eat(TK_IDENT);
     // TODO: check if the type identifier is declared and get its actual type
+    obj = checkDeclaredType(currentToken->string);
+    if (obj != NULL)
+      type = duplicateType(obj->typeAttrs->actualType);
+    else
+      error(ERR_UNDECLARED_TYPE, currentToken->colNo, currentToken->lineNo);
     break;
   default:
     error(ERR_INVALID_TYPE, lookAhead->lineNo, lookAhead->colNo);
@@ -436,6 +452,9 @@ void compileCallSt(void) {
   eat(KW_CALL);
   eat(TK_IDENT);
   // TODO: check if the identifier is a declared procedure
+    Object *obj = checkDeclaredProcedure(currentToken->string);
+  if (obj == NULL)
+    error(ERR_UNDECLARED_PROCEDURE, currentToken->lineNo, currentToken->colNo);
   compileArguments();
 }
 
@@ -471,7 +490,8 @@ void compileForSt(void) {
   eat(TK_IDENT);
 
   // TODO: check if the identifier is a variable
-
+  if (checkDeclaredVariable(currentToken->string) == NULL)
+    error(ERR_UNDECLARED_VARIABLE, currentToken->lineNo, currentToken->colNo);
   eat(SB_ASSIGN);
   compileExpression();
 
