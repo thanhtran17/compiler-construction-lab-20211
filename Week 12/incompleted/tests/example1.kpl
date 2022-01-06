@@ -1,5 +1,13 @@
 Program Example1; (* Example 1 *)
-VAR X: INTEGER; 
-    X: CHAR;
+VAR N: INTEGER;
+    I: INTEGER;
 Begin
+    N := 10;
+    I := 1;
+    S := 0;
+    WHILE I <= N DO
+     BEGIN
+       S := S + I;
+       I := I + 1;
+     END
 End. (* Example 1 *)
