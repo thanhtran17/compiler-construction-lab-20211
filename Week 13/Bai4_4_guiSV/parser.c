@@ -412,7 +412,7 @@ void compileStatement(void) {
 Type* compileLValue(void) {
   // TODO: parse a lvalue (a variable, an array element, a parameter, the current function identifier)
   Object* var = NULL;
-  Type* varType = NULL;
+  Type*   varType = NULL;
 
   eat(TK_IDENT);
   // check if the identifier is a function identifier, or a variable identifier, or a parameter  
@@ -437,7 +437,7 @@ void compileAssignSt(void) {
   lValueType = compileLValue();
   eat(SB_ASSIGN);
   expressionType = compileExpression();
-  checkTypeEquality(lValueType, expressionType);
+  checkTypeEquality(lValueType, expressionType); // check giống type
 }
 
 void compileCallSt(void) {
@@ -505,16 +505,9 @@ void compileForSt(void) {
 void compileArgument(Object* param) {
   // TODO: parse an argument, and check type consistency
   //       If the corresponding parameter is a reference, the argument must be a lvalue
-  if (param->paramAttrs->kind == PARAM_REFERENCE) {
-    if (lookAhead->tokenType == TK_IDENT) {
-      checkDeclaredLValueIdent(lookAhead->string);
-    } else {
-      error(ERR_TYPE_INCONSISTENCY, lookAhead->lineNo, lookAhead->colNo);
-    }
-  }
-
   Type *argvType = compileExpression();
-  checkTypeEquality(argvType, param->paramAttrs->type);}
+  checkTypeEquality(argvType, param->paramAttrs->type);
+}
 
 void compileArguments(ObjectNode* paramList) {
   //TODO: parse a list of arguments, check the consistency of the arguments and the given parameters
@@ -645,6 +638,7 @@ void compileExpression3(void) {
     checkIntType(type);
     compileExpression3();
     break;
+  
     // check the FOLLOW set
   case KW_TO:
   case KW_DO:
@@ -720,7 +714,7 @@ Type* compileFactor(void) {
   // TODO: parse a factor and return the factor's type
 
   Object* obj = NULL;
-  Type* type  = NULL;
+  Type*  type = NULL;
 
   switch (lookAhead->tokenType) {
   case TK_NUMBER:
@@ -771,7 +765,7 @@ Type* compileFactor(void) {
 Type* compileIndexes(Type* arrayType) {
   // TODO: parse a sequence of indexes, check the consistency to the arrayType, and return the element type
   Type *indexType = NULL;
-  Type *elementType = NULL;
+  Type *aEleType = NULL;
   
   while (lookAhead->tokenType == SB_LSEL) {
     eat(SB_LSEL);
@@ -782,9 +776,9 @@ Type* compileIndexes(Type* arrayType) {
     arrayType = arrayType->elementType;
   }
   
-  elementType = arrayType;
+  aEleType = arrayType;
 
-  return elementType;
+  return aEleType;
 
 }
 
